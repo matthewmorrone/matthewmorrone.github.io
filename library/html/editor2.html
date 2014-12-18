@@ -1,0 +1,513 @@
+
+<html>
+	<head>
+		<title>CodeMirror</title>
+		<link rel="shortcut icon" type="image/x-icon" href="psi.ico">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
+		<link rel="stylesheet" href="lib/codemirror.css">
+		<script src="lib/codemirror.js"></script>
+		<script src="lib/util/closetag.js"></script>
+		<script src="mode/xml/xml.js"></script>
+		<script src="jquery.js"></script>
+		<script src="mode/javascript/javascript.js"></script>
+		<script src="mode/css/css.js"></script>
+		<script src="mode/htmlmixed/htmlmixed.js"></script>
+		<script src="lib/util/foldcode.js"></script>
+		<script src="lib/util/searchcursor.js"></script>
+		<script src="lib/util/match-highlighter.js"></script>
+		<script src="lib/util/loadmode.js"></script>
+		<script src="lib/util/formatting.js"></script>
+		<link rel="stylesheet" href="theme/neat.css">
+		<link rel="stylesheet" href="theme/elegant.css">
+		<link rel="stylesheet" href="theme/erlang-dark.css">
+		<link rel="stylesheet" href="theme/night.css">
+		<link rel="stylesheet" href="theme/monokai.css">
+		<link rel="stylesheet" href="theme/cobalt.css">
+		<link rel="stylesheet" href="theme/eclipse.css">
+		<link rel="stylesheet" href="theme/rubyblue.css">
+		<link rel="stylesheet" href="theme/lesser-dark.css">
+		<link rel="stylesheet" href="theme/xq-dark.css">
+		<link rel="stylesheet" href="theme/ambiance.css">
+		<link rel="stylesheet" href="theme/blackboard.css">
+		<style type="text/css">
+		*
+		{
+			margin: 0px;
+			padding: 0px; 
+			border: none; 
+		}
+		body
+		{
+			width: 100%;
+			height: 100%;
+		}
+		#menu
+		{
+			float: left;
+			width: 10%;
+			height: 100%;
+		}
+		.CodeMirror, iframe
+		{
+			float: left;
+			width: 44%;
+			height: 100%;
+			border-left: 1px solid black
+		}
+		.activeline 
+		{
+			background: #e8f2ff !important;
+		}
+		.CodeMirror
+		{
+			overflow: scroll; 
+		}
+		#code
+		{
+			height: 100%; 
+		}
+		.CodeMirror-scroll 
+		{
+			height: auto;
+			overflow-y: hidden;
+			overflow-x: auto;
+			width: 100%;
+		}
+		span.CodeMirror-matchhighlight 
+		{
+			background: #e9e9e9;
+		}
+		.CodeMirror-focused span.CodeMirror-matchhighlight 
+		{
+			background: #e7e4ff; !important
+		}
+		.cm-tab:after, .visible-cm-tab:after
+		{
+			display: -moz-inline-block;
+			display: -webkit-inline-block;
+			display: inline-block;
+			width: 0px;
+			position: relative;
+			overflow: visible;
+			left: -1.4em;
+			color: #aaa;
+		}
+		.visible-cm-tab:after
+		{
+			content: '\21e5';
+		}
+		.CodeMirror-fullscreen 
+		{
+			display: block;
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			z-index: 9999;
+			margin: 0;
+			padding: 0;
+			border: 0px solid #BBBBBB;
+			opacity: 1;
+		}
+		#changewidth
+		{
+			float: left;
+			width: 2px; 
+			height: 100%; 
+			opacity: 0; 
+			cursor: e-resize;
+		}
+		</style>
+	</head>
+	<body>
+<div id="find">  
+		<div id="menu">
+			<ul>
+				<li>
+					<select onchange="selectTheme()" id="select"><option selected>default</option><option>ambiance</option><option>blackboard</option><option>cobalt</option><option>eclipse</option><option>elegant</option><option>erlang-dark</option><option>lesser-dark</option><option>monokai</option><option>neat</option><option>night</option><option>rubyblue</option><option>xq-dark</option></select>
+				</li>
+				<li>
+					<input id="showtabs" type="checkbox">Show Tabs</input>
+				</li>
+				<li>
+					<select id="mode"></select>
+				</li>
+				<li>
+					<button type=button onclick="change()">Change Mode</button>
+				</li>
+				<li>
+					<button onclick="autoFormatSelection()">Autoformat Selected</button>
+				</li>
+				<li>
+					<button onclick="commentSelection(true)">Comment Selected</button>
+				</li>
+				<li>
+					<button onclick="commentSelection(false)">Uncomment Selected</button>
+				</li>
+				<li>
+					<span id="editwidth"></span>
+				</li>
+				<li>
+					<span id="viewwidth"></span>
+				</li>
+				<li>
+					<span id="pagex"></span>
+				</li>
+			</ul>
+		</div>
+</div>
+<div id="edit">        
+		<form>
+<textarea id="code" name="code">
+<!doctype html>
+<html>
+	<head>
+		<meta charset=utf-8>
+		<title>HTML5 canvas demo</title>
+		<style>
+			*
+			{
+				padding: 0px;
+				margin: 0px; 
+			}
+			body
+			{
+				height: 100%;
+				width: 100%; 
+			}
+		</style>
+	</head>
+	<body>
+
+		<canvas id='pane' width='500' height='1000'></canvas>
+		<script>
+			var canvas = document.getElementById('pane')
+			var context = canvas.getContext('2d')
+				
+			
+			draw(250, 250)
+
+			function clear()
+			{
+				context.clearRect(0, 0, canvas.width, canvas.height);	
+			}
+			function draw(x, y)
+			{
+				circle(x-100, y, 100, 5, "", 'rgba(250, 0, 0, 0.5)');
+				circle(x, y-100, 100, 5, "", 'rgba(0, 0, 0, 0.5)');
+				circle(x, y+100, 100, 5, "", 'rgba(0, 250, 0, 0.5)');
+				circle(x+100, y, 100, 5, "", 'rgba(0, 0, 250, 0.5)');
+				circle(x-70, y-70, 100, 5, "", 'rgba(250, 0, 250, 0.5)');
+				circle(x+70, y+70, 100, 5, "", 'rgba(250, 250, 0, 0.5)');
+				circle(x-70, y+70, 100, 5, "", 'rgba(0, 250, 250, 0.5)');
+				circle(x+70, y-70, 100, 5, "", 'rgba(250, 250, 250, 0.5)');
+				
+				circle(x-100, y, 100, 5, "black");
+				circle(x, y-100, 100, 5, "black");
+				circle(x, y+100, 100, 5, "black");
+				circle(x+100, y, 100, 5, "black");
+				circle(x-70, y-70, 100, 5, "black");
+				circle(x-70, y+70, 100, 5, "black");
+				circle(x+70, y-70, 100, 5, "black");
+				circle(x+70, y+70, 100, 5, "black");				
+			}
+			function square(x, y, e, w, c, f)
+			{
+				if (c == "")
+				{
+					c = 'rgba(0, 0, 0, 0)'
+				}
+				context.beginPath()
+				context.rect(x, y, e, e)
+				context.lineWidth = w
+				context.strokeStyle = c
+				context.stroke()
+				if (f)
+				{
+					context.fillStyle = f
+					context.fillRect(x, y, e, e)	
+				}
+			}
+			function circle(x, y, r, w, c, f)
+			{
+				context.beginPath();
+				context.arc(x, y, r, Math.PI, -Math.PI, false);
+				context.lineWidth = w;	
+				if (f)
+				{
+					context.fillStyle = f
+					context.fill();
+				}
+				context.strokeStyle = c;
+				context.stroke();	
+			}
+		</script>
+	</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+</textarea>
+		</form>
+		
+		
+</div>
+<div id="changewidth">
+</div>
+<div id="view">
+		
+		
+		<iframe id="preview"></iframe>
+
+<script type="text/javascript">
+function highlight_off(input)
+{
+	input.css({
+		"-webkit-touch-callout": "none", 
+		"-webkit-user-select": "none", 
+		"-khtml-user-select": "none", 
+		"-moz-user-select": "none", 
+		"-ms-user-select": "none", 
+		"user-select": "none"
+	})
+}
+function highlight_on(input)
+{
+	input.css({
+		"-webkit-touch-callout": "auto", 
+		"-webkit-user-select": "auto", 
+		"-khtml-user-select": "auto", 
+		"-moz-user-select": "auto", 
+		"-ms-user-select": "auto", 
+		"user-select": "auto"
+	})
+}
+
+function getSelectedRange() 
+{
+	return {from: editor.getCursor(true), to: editor.getCursor(false)}
+}
+function autoFormatSelection() 
+{
+	var range = getSelectedRange()
+	editor.autoFormatRange(range.from, range.to)
+}
+function commentSelection(isComment) 
+{
+	var range = getSelectedRange()
+	editor.commentRange(isComment, range.from, range.to)
+}   
+
+CodeMirror.modeURL = "../mode/%N/%N.js"
+var modeInput = document.getElementById("mode")
+CodeMirror.connect(modeInput, "change", function(e) 
+{
+	if (e.keyCode == 13) change()
+})
+function change() 
+{
+	editor.setOption("mode", modeInput.value)
+	CodeMirror.autoLoadMode(editor, modeInput.value)
+}
+$.post(
+	"codemirror.php",
+	function(data)
+	{
+		$("#mode").html(data)
+	},
+	"text"
+)
+$(function()
+{
+	$("#showtabs").click(function()
+	{
+		if ($("#showtabs:checked").length == 1)
+		{
+			$(".cm-tab").each(function()
+			{
+				$(this).attr("class", "visible-cm-tab")
+			})          
+		}
+		else
+		{
+			$(".visible-cm-tab").each(function()
+			{
+				$(this).attr("class", "cm-tab")
+			})
+		}
+	})
+	var c = $("#code").text()
+	c = c.replace(/\t/g, 'x')
+	$("#code").html(c)
+})
+
+
+var delay
+var foldFunc_html = CodeMirror.newFoldFunction(CodeMirror.tagRangeFinder)
+var editor = CodeMirror.fromTextArea($("#code")[0], 
+{
+	mode: 'text/html',
+	//closeTagEnabled: false, // Set this option to disable tag closing behavior without having to remove the key bindings.
+	//closeTagIndent: false, // Pass false or an array of tag names to override the default indentation behavior.
+	extraKeys: 
+	{
+		"Tab": "indentMore", 
+		"Shift-Tab": "indentLess",
+		
+		"'>'":      function(cm) {cm.closeTag(cm, '>')},
+		"'/'":      function(cm) {cm.closeTag(cm, '/')},
+		"Ctrl-Q":   function(cm) {foldFunc_html(cm, cm.getCursor().line)},
+		"F11":      function() 
+		{
+			var scroller = editor.getScrollerElement()
+			if (scroller.className.search(/\bCodeMirror-fullscreen\b/) === -1) 
+			{
+				scroller.className += "CodeMirror-fullscreen"
+				scroller.style.height = "100%"
+				scroller.style.width = "100%"
+				editor.refresh()
+			} 
+			else 
+			{
+				scroller.className = scroller.className.replace(" CodeMirror-fullscreen", "")
+				scroller.style.height = ''
+				scroller.style.width = ''
+				editor.refresh()
+			}
+		},
+		"Esc":      function() 
+		{
+			var scroller = editor.getScrollerElement()
+			if (scroller.className.search(/\bCodeMirror-fullscreen\b/) !== -1) 
+			{
+				scroller.className = scroller.className.replace(" CodeMirror-fullscreen", "")
+				scroller.style.height = ''
+				scroller.style.width = ''
+				editor.refresh()
+			}
+		}
+	},
+	onKeyEvent: function(i, e) 
+	{
+		if ((e.keyCode == 122 || e.keyCode == 27) && e.type == 'keydown') 
+		{
+			return toggleFullscreenEditing();
+		}
+	},
+	wordWrap: true, 
+	tabMode: 'indent',
+	tabSize: 4,
+	indentUnit: 4,
+	indentWithTabs: true,
+	onChange: function() 
+	{
+		clearTimeout(delay)
+		delay = setTimeout(updatePreview, 100)
+	},
+	lineNumbers: true,
+//     lineWrapping: true,
+//     fixedGutter: true, 
+	matchBrackets: true,
+	autofocus: true,
+	onGutterClick: function(cm, n)
+	{
+		var line = cm.getLine(n)
+		pattern = /<(.*?)>/
+		match = line.match(pattern)
+		
+		if (match)
+		{
+			foldFunc_html(editor, n)
+		}
+		else
+		{
+			var info = cm.lineInfo(n)
+			if (info.markerText)
+			{
+				cm.clearMarker(n)
+			}
+			else
+			{
+				cm.setMarker(n, "<span style=\"color: #900\">●</span> %N%")
+			}
+		}
+	},
+	onCursorActivity: function() 
+	{
+		editor.matchHighlight("CodeMirror-matchhighlight")
+
+		editor.setLineClass(hlLine, null, null)
+		hlLine = editor.setLineClass(editor.getCursor().line, null, "activeline")
+	}
+})
+var hlLine = editor.setLineClass(0, "activeline")
+function updatePreview() 
+{
+	var previewFrame = $('#preview')[0]
+	var preview =  previewFrame.contentDocument ||  previewFrame.contentWindow.document
+	preview.open()
+	preview.write(editor.getValue())
+	preview.close()
+}
+setTimeout(updatePreview, 100)
+
+var input = $("#select")
+function selectTheme() 
+{
+	var theme = input.val()
+	editor.setOption("theme", theme)
+}
+var choice = document.location.search && document.location.search.slice(1)
+if (choice) 
+{
+	input.value = choice
+	editor.setOption("theme", choice)
+}
+function toggleFullscreenEditing()
+{
+	document.documentElement.webkitRequestFullScreen(1);
+	var editorDiv = $('.CodeMirror-scroll');
+	if (!editorDiv.hasClass('fullscreen')) 
+	{
+		toggleFullscreenEditing.beforeFullscreen = { height: editorDiv.height(), width: editorDiv.width() }
+		editorDiv.addClass('fullscreen')
+		editorDiv.height('100%')
+		editorDiv.width('100%')
+		editor.refresh()
+		$("#preview").hide()
+	}
+	else 
+	{
+		editorDiv.removeClass('fullscreen')
+		editorDiv.height(toggleFullscreenEditing.beforeFullscreen.height)
+		editorDiv.width(toggleFullscreenEditing.beforeFullscreen.width)
+		editor.refresh()
+		$("#preview").show()
+	}
+}
+
+$(function()
+{
+//     var contents = $("textarea").val()
+//     contents.replace("var", "")
+//     $("textarea").val(contents)
+})
+</script>
+
+
+</div>
+	</body>
+</html>
+
+
+

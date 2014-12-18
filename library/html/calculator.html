@@ -1,0 +1,97 @@
+<html>
+<head>
+<title></title>
+<script src="jquery.js"></script>
+<script src="jquery.ui.js"></script>
+<script src="underscore.js"></script>
+<script src="library.js"></script>
+<script>
+$(function()
+{
+
+	var line =	function(x)	{return x}
+	var sin = 	function(x)	{return Math.sin(x)}
+	var cos = 	function(x)	{return Math.cos(x)}
+	var tan = 	function(x)	{return Math.tan(x)}
+	var asin = 	function(x)	{return Math.asin(x)}
+	var acos = 	function(x)	{return Math.acos(x)}
+	var atan = 	function(x)	{return Math.atan(x)}
+	var sqrt = 	function(x)	{return Math.sqrt(x)}
+	var abs = 	function(x)	{return Math.abs(x)}
+	var ceil = 	function(x)	{return Math.ceil(x)}
+	var floor = function(x)	{return Math.floor(x)}
+	var e = 	function(x)	{return Math.pow(Math.E, x)}
+	var z = 	function(x) {return (1/(2*Math.PI))*e(((-(x*x))/2))}
+	// for (var item in Math) {window.prototype[item] = item}
+
+	var color = Color(255, 0, 0, 1)
+
+	var c = Canvas()
+	c.grid()
+	c
+		.render(function(x){return Math.pow(x, 3)})
+		.render(function(x){return Math.pow(x, 2)})
+		.render(function(x){return Math.pow(x, 1)})
+
+
+
+	// The partial derivative with respect to x at f(x, y) would be (f(x+h, y) - f(x-h, y))/2h.
+	// The partial derivative with respect to y at f(x, y) would be (f(x, y+h) - f(x, y-h))/2h.
+
+	// list of x and f(x) values:
+	// f'(x) as (f(x+h) - f(x-h)) / 2h.
+	// left end: (f(x + h) - f(x))/h
+	// right end: (f(x) - f(x-h))/h
+
+
+
+
+	// function poly(variable, degree)
+	// {
+	// 	return degree*((variable)^(degree-1))
+	// }
+
+	// var result = 0
+	// $.each(array, function(index, value)
+	// {
+	// 	result = result + poly(value,index)
+	// })
+
+	// var data = function(n)
+	// {
+	// 	if (!n) {n = 10}
+	// 	var result = []
+	// 	for(var i = 0; i < n; i++)
+	// 	{
+	// 		result.push(_.random(0, 10)+(_.random(0, 10)/10))
+	// 		// alert(result[i]+" "+typeof result[i])
+	// 	}
+	// 	return result
+	// }
+	// var result = _.toArray(result)
+
+	// var result = $.map(result, function(k, v) {
+	//     return [k];
+	// });
+
+
+	// c.render(result)
+
+	// // var arr = _.zip(, result)
+	// var range = _.toArray(_.range(0, 9))
+
+	// alert(typeof range)
+	// alert(typeof result)
+	// // var arr = [, result]
+	// alert(least_squares(arr))
+})
+
+
+
+
+</script>
+</head>
+<body>
+<canvas width="500" height="500"></canvas>
+</body>
+</html>

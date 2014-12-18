@@ -1,0 +1,148 @@
+<!--
+evernote
+dropbox
+microsoft word
+google docs
+aptana/eclipse/netbeans
+cloud9
+XML
+textwrangler: autoformat text, toggling
+access documents both locally and through s/ftp
+line-ending normalizer
+upload and download files
+recently opened/edited/created documents
+trash can
+line numbers
+Add file, specify name and extension
+add new folder/directory
+search documents
+created, updated, author, location
+drag and drop
+highlight all text between two clicked points
+encrypt text
+drag and drop to move highlighted text
+delete file
+save file, or automatic update
+tags, attachments
+web workers
+ability to save webpages and directories
+fonts, text sizes, record audio
+paint: HTML5 canvas
+image cropping, rotating, color alteration
+to-do checkbox
+markers like in one note
+highlighting
+search-and-share
+-->
+<html>
+	<head>
+		<link rel="shortcut icon" type="image/x-icon" href="../../index/images/icons/psi.gif">
+		<link rel="stylesheet" type="text/css" href="styles.css" />
+		<script language="javascript" type="text/javascript" src="jquery.js"></script>
+		<script language="javascript" type="text/javascript" src="functions.js"></script>
+		<title>Psi-Editor</title>
+		<script>get_tree()</script>
+	</head>
+	<body>
+		<div id="left">
+			<div id="find">
+				<div class="but">
+					<button class="nav" id="find_button"></button>
+				</div>
+				<div class="con">
+					<div class="controls">
+						<button id="new_file">New</button>
+						<button id="delete">Del</button>
+						<br />
+						<br />
+						<button id="toggle_all">Collapse All</button>
+					</div>
+					<div id="directory_div">
+						<ul class="list" id="directory"></ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="right">
+			<div id="edit">
+				<div class="but">
+					<button class="nav" id="edit_button"></button>
+				</div>
+				<div class="con">
+					<div>
+						<!-- <button id="css_format">CSS</button> -->
+					</div>
+					<textarea id="text_edit"></textarea>
+				</div>
+			</div>
+			<div id="view">
+				<div class="but">
+					<button class="nav" id="view_button"></button>
+				</div>
+				<div class="con">
+					<iframe contenteditable="true"><p contenteditable="true">This is a paragraph. It is editable. Try to change this text.</p></iframe>
+				</div>
+			</div>
+		</div>
+	</body>
+<!--
+<div id="controls">
+	<button id="bold" value="b"><b>B</b></button>
+	<button id="italic" value="i"><i>I</i></button>
+	<button id="underline" value="u"><u>U</u></button>
+	<button id="strikethrough" value="strike"><strike>S</strike></button>
+	<button id="code" value="code"><code>C</code></button>
+	<button id="superscript" value="sup"><sup>Sup</sup></button>
+	<button id="subscript" value="sub"><sub>Sub</sub></button>
+	<button id="paragraph" value="p">p</button>
+	<button id="break" value="br">br</button>
+	<button id="horizontal" value="hr">hr</button>
+	<button id="caption" value="caption">caption</button>
+	<select id="color">
+		<option value="">Color</option>
+		<option value="black" style="color:black">Black</option>
+		<option value="red" style="color:red">Red</option>
+		<option value="orange" style="color:orange">Orange</option>
+		<option value="yellow" style="color:yellow">Yellow</option>
+		<option value="green" style="color:green">Green</option>
+		<option value="blue" style="color:blue">Blue</option>
+		<option value="purple" style="color:purple">Purple</option>
+		<option value="grey" style="color:grey">Grey</option>
+		<option value="pink" style="color:pink">Pink</option>
+	</select>
+	<button id="fontsizedown">-</button>
+	<button id="fontsizeup">+</button>
+	<button id="left">L</button>
+	<button id="center">C</button>
+	<button id="right">R</button>
+	<button id="justify">J</button>
+	<select id="element">
+		<option id="" value=""></option>
+		<option id="link" value="link">Link</option>
+		<option id="anchor" value="anchor">Anchor</option>
+		<option id="img" value="img">Image</option>
+		<option id="audio" value="audio">Audio</option>
+		<option id="video" value="">Video</option>
+	</select>
+	<select id="add_table">
+		<option>table</option>
+		<option>tr</option>
+		<optgroup label="entries">
+			<option>td</option>
+			<option>th</option>
+		</optgroup>
+		<optgroup label="sections">
+			<option>tbody</option>
+			<option>thead</option>
+			<option>tfoot</option>
+		</optgroup>
+	</select>
+	<button id="ul">ul</button>
+	<button id="ol">ol</button>
+	<button id="li">li</button>
+	<button id="time">time</button>
+
+	<textarea id="text_edit"></textarea>
+</div>
+-->
+</html>

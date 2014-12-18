@@ -1,0 +1,253 @@
+
+<div class="frame" id="frame2"></div>
+<div class="frame" id="frame3"></div>
+<div class="frame" id="frame4"></div>
+<div class="frame" id="frame5"></div>
+<style>
+table { width: 100%; height: auto; border: 2px solid black; }
+td { border: 3px solid black;  }
+table table { border: 0; height: 100%; }
+.frame > table { width: 400px; height: 400px; }
+.frame {float: left; margin: 10px;}
+#frame2, #frame4 {clear: left;}
+</style>
+<script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script>
+$(function(){
+	var colors = ['red','blue','yellow'],
+		minRowCols = 4,
+		maxRowCols = 6,
+		recursionChance = .20,
+		recursionDepreciationRate = .20;
+	var generateMondrianTable = function(min, max, chance){
+		var numRows = Math.floor(Math.random() * (max + 1 - min) + min);
+		var numCols = Math.floor(Math.random() * (max + 1 - min) + min);
+		var $thisTable = $('<table border="0" cellpadding="0" cellspacing="0">');
+		for ( var i = 0; i < numRows; i++ ) {
+			$thisTable.append('<tr></tr>');
+		}
+		$thisTable.find('tr').each(function(){
+			for ( var j = 0; j < numCols; j++ ) {
+				$(this).append('<td> </td>');
+			}
+		});
+		$thisTable.find('td').each(function(){
+			var feelingLucky = (Math.random() < chance) ? true : false;
+			if ( feelingLucky ) {
+				var newerTable = generateMondrianTable(1, 3, chance * recursionDepreciationRate);
+				console.log(newerTable, chance * recursionChance);
+				$(this).append(newerTable);
+			}
+		});
+		return $thisTable;
+	};
+	var $frame = $('#frame2');
+	$frame.each(function(){
+		var newTable = generateMondrianTable(minRowCols, maxRowCols, recursionChance);
+		$frame.append(newTable);
+	});
+});
+</script>
+
+<script>
+$(function(){
+	var colors = ['red','blue','yellow'],
+		minRowCols = 4,
+		maxRowCols = 6,
+		recursionChance = .33,
+		recursionDepreciationRate = .05,
+		styleChance = .20;
+	var generateMondrianTable = function(min, max, chance){
+		var numRows = Math.floor(Math.random() * (max + 1 - min) + min);
+		var numCols = Math.floor(Math.random() * (max + 1 - min) + min);
+		var $thisTable = $('<table border="0" cellpadding="0" cellspacing="0">');
+		for ( var i = 0; i < numRows; i++ ) {
+			$thisTable.append('<tr></tr>');
+		}
+		$thisTable.find('tr').each(function(){
+			for ( var j = 0; j < numCols; j++ ) {
+				$(this).append('<td> </td>');
+			}
+		});
+		$thisTable.find('td').each(function(){
+			var feelingLucky = (Math.random() < chance) ? true : false;
+			if ( feelingLucky ) {
+				var newerTable = generateMondrianTable(0, 2, chance * recursionDepreciationRate);
+				$(this).append(newerTable);
+			}
+		});
+		return $thisTable;
+	};
+	var getCellBackgroundColor = function(){
+		var setToPrimaryColors = (Math.random() < styleChance) ? true : false;
+		var bgColor;
+		if ( setToPrimaryColors ) {
+			bgColor = colors[Math.floor(Math.random() * (colors.length + 1))];
+		}
+		else {
+			bgColor = 'white';
+		}
+		return bgColor;
+	};
+	var getRandomPercentage = function(){
+		var setToPercentage = (Math.random() < styleChance) ? true : false;
+		var percentage;
+		if ( setToPercentage ) {
+			percentage = Math.floor(Math.random() * (100 + 1));
+		}
+		else {
+			percentage = '100';
+		}
+		return percentage;
+	}
+	var $frame = $('#frame3');
+	$frame.each(function(){
+		var newTable = generateMondrianTable(minRowCols, maxRowCols, recursionChance);
+		$frame.append(newTable);
+		$frame.find('td').each(function(){
+			$(this).css({
+				'background-color' : getCellBackgroundColor()
+			});
+		});
+		$frame.find('> tr').each(function(){
+			$(this).css({
+				'height' : getRandomPercentage() + '%'
+			});
+		});
+	});
+});
+</script>
+
+<script>
+$(function(){
+	var colors = ['red','blue','yellow'],
+		minRowCols = 4,
+		maxRowCols = 6,
+		recursionChance = 0.2,
+		recursionDepreciationRate = 0.05,
+		styleChance = 0.3;
+	var generateMondrianTable = function(min, max, chance){
+		var numRows = Math.floor(Math.random() * (max + 1 - min) + min);
+		var numCols = Math.floor(Math.random() * (max + 1 - min) + min);
+		var $thisTable = $('<table border="0" cellpadding="0" cellspacing="0">');
+		for ( var i = 0; i < numRows; i++ ) {
+			$thisTable.append('<tr></tr>');
+		}
+		$thisTable.find('tr').each(function(){
+			for ( var j = 0; j < numCols; j++ ) {
+				$(this).append('<td> </td>');
+			}
+		});
+		$thisTable.find('td').each(function(){
+			var feelingLucky = (Math.random() < chance) ? true : false;
+			if ( feelingLucky ) {
+				var newerTable = generateMondrianTable(1, 3, chance * recursionDepreciationRate);
+				$(this).append(newerTable)
+				.css({
+					'border' : 'none'
+				});
+			}
+		});
+		return $thisTable;
+	};
+	var getCellBackgroundColor = function(){
+		var setToPrimaryColors = (Math.random() < styleChance) ? true : false;
+		var bgColor;
+		if ( setToPrimaryColors ) {
+			bgColor = colors[Math.floor(Math.random() * (colors.length + 1))];
+		}
+		else {
+			bgColor = 'white';
+		}
+		return bgColor;
+	};
+	var getRandomPercentage = function(){
+		var setToPercentage = (Math.random() < styleChance) ? true : false;
+		var percentage;
+		if ( setToPercentage ) {
+			percentage = Math.floor(Math.random() * (100 + 1));
+		}
+		else {
+			percentage = '100';
+		}
+		return percentage;
+	};
+	var $frame = $('#frame4, #frame5');
+	$frame.each(function(){
+		var $thisFrame = $(this)
+		var newTable = generateMondrianTable(minRowCols, maxRowCols, recursionChance);
+		$thisFrame.append(newTable);
+		$thisFrame.find('td').each(function(){
+			$(this).css({
+				'background-color' : getCellBackgroundColor(),
+			});
+		});
+		$thisFrame.find('> tr').each(function(){
+			$(this).css({
+				'height' : getRandomPercentage() + '%'
+			});
+		});
+	});
+});
+</script>
+<script>
+
+
+$.each({
+	checked: "checked",
+	class: "class",
+	colspan: "colspan",
+	content: "content",
+	disabled: "disabled",
+	for: "for",
+	href: "href",
+	id: "id",
+	label: "label",
+	multiple: "multiple",
+	name: "name",
+	readonly: "readonly",
+	rel: "rel",
+	rowspan: "rowspan",
+	selected: "selected",
+	src: "src",
+	style: "style",
+	target: "target",
+	text: "text",
+	title: "title",
+	type: "type",
+	valign: "valign"//,
+	// value: "value"
+}, function(name, type)
+{
+	elem = this[0]
+	$.fn[name] = function(value)
+	{
+		return $.access(this, function(elem, type, value)
+		{
+			if (value === undefined)
+			{
+				orig = $.attr(elem, type);
+				ret = parseFloat(orig);
+				return ($.isNumeric(ret) ? ret : orig);
+			}
+			$(elem).attr(type, value);
+
+		}, type, value, arguments.length, null)
+
+	}
+
+})
+function newTag(tag) {return $("<"+tag+"></"+tag+">")}
+$("script").each(function() {
+	var script = $(this);
+	var inline = newTag("script");
+	var include = newTag("script");
+
+	if (script.text() !== "" && script.src() !== "") {
+		inline.text(script.text());
+		include.src(script.src());
+	}
+	script.after(include).after(inline);
+	script.remove();
+})
+</script>

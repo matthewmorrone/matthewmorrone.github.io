@@ -1,0 +1,240 @@
+<html>
+<head>
+<title>Triangle Visual</title>
+<link rel="shortcut icon" type="image/x-icon" href="psi.ico" />
+<link rel="stylesheet" type="text/css" href="jquery.ui.css" />
+<link rel="stylesheet" type="text/css" href="fonts.css" />
+<style>
+
+@font-face {
+	font-family: "Raleway";
+	font-style: normal;
+	font-weight: 400;
+	src: local("Raleway"), url(http://themes.googleusercontent.com/static/fonts/raleway/v6/cIFypx4yrWPDz3zOxk7hIQLUuEpTyoUstqEm5AMlJo4.woff) format("woff");
+}
+@font-face {
+	font-family: "Open Sans";
+	font-style: normal;
+	font-weight: 400;
+	src: local("Open Sans"), local("OpenSans"), url(http://themes.googleusercontent.com/static/fonts/opensans/v6/cJZKeOuBrn4kERxqtaUH3bO3LdcAZYWl9Si6vvxL-qU.woff) format("woff");
+}
+
+
+</style>
+<script src="jquery.js"></script>
+<script src="jquery.ui.js"></script>
+<style>
+*
+{
+	margin: 0px;
+	padding: 0px;
+}
+body
+{
+	width: 100%;
+	height: 100%;
+	font-family: "Open Sans";
+}
+p
+{
+	margin: 10px;
+}
+table, canvas
+{
+	margin: 10px;
+	float: left;
+}
+table, th, td
+{
+	border: 1px solid black;
+	border-collapse: collapse;
+}
+#d1, #d2, #d3
+{
+	/*margin: 15px;*/
+	height: 200px;
+}
+#d1 .ui-slider-range
+{
+	background: #ef2929;
+}
+#d1 .ui-slider-handle
+{
+	border-color: #ef2929;
+}
+#d2 .ui-slider-range
+{
+	background: yellow;
+}
+#d2 .ui-slider-handle
+{
+	border-color: yellow;
+}
+#d3 .ui-slider-range
+{
+	background: #8ae234;
+}
+#d3 .ui-slider-handle
+{
+	border-color: #8ae234;
+}
+</style>
+<script>
+function c() {return $("canvas")[0].getContext("2d")}
+function clear() {c().clearRect(0, 0, 500, 500)}
+window.nativeAlert = window.alert
+window.alert = function() {window.nativeAlert(Array.prototype.slice.call(arguments).join(", "))}
+function origin() {return {hx: $("canvas").width()/2, hy: $("canvas").height()/2}}
+
+function drawLine(el)
+{
+	var ctx = c()
+	ctx.beginPath()
+	ctx.moveTo(el.attr("xa"), el.attr("ya"))
+	ctx.lineTo(el.attr("xb"), el.attr("yb"))
+	ctx.stroke()
+	ctx.closePath()
+}
+
+var corners = Array()
+function drawCorner(p)
+{
+	var x = p[0]
+	var y = p[1]
+	var ctx = c()
+	ctx.beginPath()
+	ctx.arc(x, y, 5, 0, 2*Math.PI)
+	ctx.fill()
+	ctx.closePath()
+	return [x, y]
+}
+
+var triangles = Array()
+function drawEqTriangle(side)
+{
+	var ctx = c()
+	var h = side * (Math.sqrt(3)/2)
+	var cx = origin().hx
+	var cy = origin().hy - (h/8)
+	ctx.beginPath()
+	ctx.moveTo(cx,              cy-(h/2))
+	corners.push([cx,           cy-(h/2)])
+	ctx.lineTo(cx-(side/2),     cy+(h/2))
+	corners.push([cx-(side/2),  cy+(h/2)])
+	ctx.lineTo(cx+(side/2),     cy+(h/2))
+	corners.push([cx+(side/2),  cy+(h/2)])
+	ctx.lineTo(cx,              cy-(h/2))
+	triangles.push([triangles.length+1, [cx, cy-(h/2)], [cx-(side/2), cy+(h/2)], [cx+(side/2), cy+(h/2)]])
+	ctx.stroke()
+	ctx.closePath()
+	return this
+}
+function colorFormat(r, g, b, a)
+{
+	if (r > 255) {r = 255}
+	if (g > 255) {g = 255}
+	if (b > 255) {b = 255}
+
+	var color = "rgba("+r+", "+g+", "+b+", "+a+")"
+	// $("title").html(color)
+	return color
+}
+
+function colorChooser()
+{
+	var c1 = Math.round(parseInt($("#d1").slider("value")))
+	var c2 = Math.round(parseInt($("#d2").slider("value")))
+	var c3 = Math.round(parseInt($("#d3").slider("value")))
+	var v  = (c1 + c2 + c3) / 120 - .25
+
+	var r = Math.round(410 * (1 - v))
+	var g = Math.round(410 * v)
+
+	var color = colorFormat(r, g, 0, .75)
+
+	return color
+}
+function drawCurvedTriangle(t)
+{
+	var ctx = c()
+
+	// var side = ((t[0]+1)*100)-50
+	// var h = side * (Math.sqrt(3)/2)
+
+	var cx = origin().hx
+	var cy = origin().hy
+
+	if (!cx || !cy) {return}
+
+	ctx.beginPath()
+	ctx.moveTo(t[1][0], t[1][1])
+	ctx.quadraticCurveTo(cx, cy, t[2][0], t[2][1])
+	ctx.quadraticCurveTo(cx, cy, t[3][0], t[3][1])
+	ctx.quadraticCurveTo(cx, cy, t[1][0], t[1][1])
+	var fillColor = colorChooser()
+
+	ctx.fillStyle = fillColor
+	ctx.fill()
+
+	ctx.stroke()
+	ctx.closePath()
+	ctx.fillStyle = "black"
+}
+
+function drawEqTriGrid()
+{
+	drawEqTriangle(50)
+	drawEqTriangle(150)
+	drawEqTriangle(250)
+	drawEqTriangle(350)
+	drawEqTriangle(450)
+}
+
+function redraw()
+{
+	clear()
+	drawEqTriGrid()
+	drawCorner(origin().hx, origin().hy)
+
+
+	var d1 = $("#d1").slider("value")
+	var d2 = $("#d2").slider("value")
+	var d3 = $("#d3").slider("value")
+
+	var p1 = [origin().hx+(d1*0), origin().hy+(d1*-5)]
+	var p2 = [origin().hx+(d2*4.6), origin().hy+(d2*3)]
+	var p3 = [origin().hx+(d3*-4.6), origin().hy+(d3*3)]
+
+	drawCorner(p1)
+	drawCorner(p2)
+	drawCorner(p3)
+
+	drawCurvedTriangle([1, p1, p2, p3])
+}
+
+
+$(function()
+{
+	$("#d1, #d2, #d3").slider({value: 25, min: 0, max: 50, step: 1, slide: redraw, orientation: "vertical", range: "min"})
+	redraw()
+})
+
+
+</script>
+</head>
+<body>
+<p>This is another visualization I made for work that uses the same coloring algorithm as the cartesian graph. It's another way of visualizing the same form of information.</p>
+
+<canvas height="500" width="500"></canvas>
+<table>
+<tr>
+	<td><div id='d1'></div></td>
+	<td><div id='d2'></div></td>
+	<td><div id='d3'></div></td>
+</tr>
+</table>
+
+<!-- <h3>Triangle</h3> -->
+
+</body>
+</html>

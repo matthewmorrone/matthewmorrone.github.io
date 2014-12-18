@@ -1,0 +1,147 @@
+<html>
+<head>
+<title>Narrative Generator</title>
+<link rel="shortcut icon" type="image/x-icon" href="/psi.ico" />
+<link rel="stylesheet" href="jquery.ui.css" />
+<link rel="stylesheet" href="fonts.css" />
+<script src="jquery.js"></script>
+<script src="jquery.ui.js"></script>
+<style>
+
+@font-face {
+	font-family: "Raleway";
+	font-style: normal;
+	font-weight: 400;
+	src: local("Raleway"), url(http://themes.googleusercontent.com/static/fonts/raleway/v6/cIFypx4yrWPDz3zOxk7hIQLUuEpTyoUstqEm5AMlJo4.woff) format("woff");
+}
+@font-face {
+	font-family: "Open Sans";
+	font-style: normal;
+	font-weight: 400;
+	src: local("Open Sans"), local("OpenSans"), url(http://themes.googleusercontent.com/static/fonts/opensans/v6/cJZKeOuBrn4kERxqtaUH3bO3LdcAZYWl9Si6vvxL-qU.woff) format("woff");
+}
+
+
+</style>
+<style>
+*
+{
+	margin: 0px;
+	padding: 0px;
+	border-radius: 0px;
+/*	overflow-x: scroll;
+	overflow-y: hidden;*/
+}
+body
+{
+	width: 100%;
+	height: 100%;
+	font-family: "Open Sans";
+}
+table, td
+{
+	border: 1px solid #cccccc;
+	border-collapse: collapse;
+}
+td:nth-child(1), td:nth-child(3)
+{
+	width: 50px;
+	height: 50px;
+	text-align: center;
+}
+.unit, div p
+{
+	margin: auto;
+	margin-top: 50px;
+	width: 500px;
+}
+.index, .count
+{
+	min-width: 50px;
+	min-height: 50px;
+	font-family: Tahoma, sans-serif;
+	font-size: 40px;
+	color: gray;
+	text-align: center;
+}
+.edit
+{
+	width: 100%;
+	height: 100%;
+	outline: none;
+	font-family: Tahoma, sans-serif;
+	border: 1px solid #cccccc;
+}
+#altertitle
+{
+	text-align: center;
+	width: 100%;
+	font-size: 120%;
+}
+</style>
+<script>
+$(function()
+{
+	$(".unit tbody").sortable({connectWith: ".unit", handle: "div", cancel: "#altertitle", helper: function(e, ui) {ui.children().each(function() {$(this).width($(this).width())}); return ui}}).disableSelection()
+	$("#NarrativeTitle").keyup(function()
+	{
+		if ($("title").html().length <= 1)
+		{
+			$("title").html("Narrative Generator")
+		}
+		else
+		{
+			$("title").html($(this).val())
+		}
+	})
+
+	$(".edit").on("keydown, keyup", function(e)
+	{
+		l = $(this).val().length
+
+		if (l < 1)
+		{
+			$(this).parents("tr").find("div").css("background-color", "rgba(255, 255, 255, .5)")
+			$(this).css({"background-color":"rgba(255, 255, 255, .5)"})
+		}
+		else if (l < 125)
+		{
+			$(this).parents("tr").find("div").css("background-color", "rgba(0, 255, 0, 1)")
+			$(this).css({"background-color":"rgba(0, 255, 20, .5)"})
+		}
+		else if (l < 150)
+		{
+			$(this).parents("tr").find("div").css("background-color", "rgba(255, 255, 0, 1)")
+			$(this).css({"background-color":"rgba(255, 255, 0, .5)"})
+		}
+		else
+		{
+			$(this).parents("tr").find("div").css("background-color", "rgba(255, 0, 0, 1)")
+			$(this).css({"background-color":"rgba(255, 0, 0, .5)"})
+		}
+		$(this).parents("tr").find(".count").html(l)
+	})
+})
+</script>
+</head>
+<body>
+	<div><p>This is a little gadget I made for work. The box to the left of the textarea displays the number of characters in real time. It turns <span style="font-color: yellow;">yellow</span> if the number of characters exceeds 125 and <span style="font-color: red;">red</span> if it goes above 150. The 10 rows can be rearranged via drag & drop. </p></div>
+	<table class='unit'>
+		<caption><input type='text' id='altertitle' /></caption>
+		<tbody>
+		<tr><td><div class='index'>0</div></td><td><textarea class='edit'></textarea></td><td><div class='count'>0</div></td></tr>
+		<tr><td><div class='index'>1</div></td><td><textarea class='edit'></textarea></td><td><div class='count'>0</div></td></tr>
+		<tr><td><div class='index'>2</div></td><td><textarea class='edit'></textarea></td><td><div class='count'>0</div></td></tr>
+		<tr><td><div class='index'>3</div></td><td><textarea class='edit'></textarea></td><td><div class='count'>0</div></td></tr>
+		<tr><td><div class='index'>4</div></td><td><textarea class='edit'></textarea></td><td><div class='count'>0</div></td></tr>
+		<tr><td><div class='index'>5</div></td><td><textarea class='edit'></textarea></td><td><div class='count'>0</div></td></tr>
+		<tr><td><div class='index'>6</div></td><td><textarea class='edit'></textarea></td><td><div class='count'>0</div></td></tr>
+		<tr><td><div class='index'>7</div></td><td><textarea class='edit'></textarea></td><td><div class='count'>0</div></td></tr>
+		<tr><td><div class='index'>8</div></td><td><textarea class='edit'></textarea></td><td><div class='count'>0</div></td></tr>
+		<tr><td><div class='index'>9</div></td><td><textarea class='edit'></textarea></td><td><div class='count'>0</div></td></tr>
+		</tbody>
+	</table>
+<!-- <h3>Counter</h3> -->
+
+</body>
+</html>

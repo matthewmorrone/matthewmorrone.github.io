@@ -1,0 +1,355 @@
+<html>
+<head>
+<title>Dice Wars</title>
+<script src="prefixfree.js"></script>
+<style>
+
+@font-face {
+	font-family: "Raleway";
+	font-style: normal;
+	font-weight: 400;
+	src: local("Raleway"), url(http://themes.googleusercontent.com/static/fonts/raleway/v6/cIFypx4yrWPDz3zOxk7hIQLUuEpTyoUstqEm5AMlJo4.woff) format("woff");
+}
+@font-face {
+	font-family: "Open Sans";
+	font-style: normal;
+	font-weight: 400;
+	src: local("Open Sans"), local("OpenSans"), url(http://themes.googleusercontent.com/static/fonts/opensans/v6/cJZKeOuBrn4kERxqtaUH3bO3LdcAZYWl9Si6vvxL-qU.woff) format("woff");
+}
+
+
+</style>
+<style>
+*
+{
+	margin: 0px;
+	padding: 0px;
+}
+body
+{
+	width: 100%;
+	height: 100%;
+}
+#caption, #counts
+{
+	position: absolute;
+	font-family: arial;
+	font-size: 150%;
+}
+#board
+{
+	width: 500px;
+	height: 500px;
+	position: absolute;
+}
+.menu
+{
+	width: 50px;
+}
+#turn:before
+{
+	content: "▶";
+	display: inline-block;
+}
+.k
+{
+	font-family: arial;
+	display: box;
+	box-pack: center;
+	box-align: center;
+	font-size: 125%;
+	width: 48px;
+	height: 48px;
+	border-right: 1px solid black;
+	border-bottom: 1px solid black;
+	position: absolute;
+}
+div[color='black'] 	{background-color: #000000; color: #FFFFFF;}
+div[color='gray'] 	{background-color: #888888;}
+div[color='white'] 	{background-color: #FFFFFF;}
+div[color='red'] 	{background-color: #FF0000;}
+div[color='green'] 	{background-color: #008800;}
+div[color='yellow']	{background-color: #FFFF00;}
+div[color='blue'] 	{background-color: #0000FF;}
+</style>
+<script src='jquery.js'></script>
+<script src='jquery.ui.js'></script>
+<script>
+(function()
+{
+	window.nativeAlert = window.alert
+	window.alert = function() {window.nativeAlert(Array.prototype.slice.call(arguments).join(", "))}
+	// window.onerror = function(msg, url, line) {window.nativeAlert("Message: " + msg, "\nurl: " + url, "\nLine Number: " + line )}
+})()
+var colors = ["green", "red", "yellow", "blue", "gray"]
+
+var interval = ""
+var going = false
+$(function()
+{
+
+	start()
+})
+function start()
+{
+	grid(500, 500)
+	$(".k").mousedown(function()
+	{
+		var s1 = $(this)
+		$(".k").mouseup(function()
+		{
+			var s2 = $(this)
+			battle(s1, s2)
+			$(".k").unbind("mouseup")
+		})
+	})
+	$("*").disableSelection()
+
+
+
+	info()
+
+}
+function info()
+{
+	$(".k").each(function()
+	{
+		// // $(".k").css("border", "2px solid black")
+		// $(".k").css("margin", "2px")
+		// var s1 = $(this)
+		// var m1 = parseInt(s1.attr("id"))
+		// var k = getNeighbors(m1)
+
+		// if (s1.attr("color") != get(k[0]).attr("color")) 	{s1.css("border-top", 	"2px solid black")}
+		// // 	console.log("%s %s", s1.attr("color"), get(k[0]).attr("color"))
+		// // 	debugger
+		// if (s1.attr("color") != get(k[1]).attr("color")) 	{s1.css("border-bottom","2px solid black")}
+		// // 	console.log("%s %s", s1.attr("color"), get(k[1]).attr("color"))
+		// // 	debugger
+		// if (s1.attr("color") != get(k[2]).attr("color")) 	{s1.css("border-left", 	"2px solid black")}
+		// // 	console.log("%s %s", s1.attr("color"), get(k[2]).attr("color"))
+		// // 	debugger
+		// if (s1.attr("color") != get(k[3]).attr("color")) 	{s1.css("border-right", "2px solid black")}
+		// // 	console.log("%s %s", s1.attr("color"), get(k[3]).attr("color"))
+		// // 	debugger
+
+
+
+	})
+
+	var result = "<div class='menu' id='turn' style='display: inline-block;'></div>"
+	for(c in colors)
+	{
+		result += "<div class='menu' id='"+colors[c]+"' style='display: inline-block; color: "+colors[c]+";'>"
+		result += $("[color='"+colors[c]+"']").length+0
+		result += "</div>"
+	}
+	$("#counts").html(result)
+
+	$("#green").click(function() 	{play("green")})
+	$("#red").click(function() 		{play("red")})
+	$("#yellow").click(function() 	{play("yellow")})
+	$("#blue").click(function() 	{play("blue")})
+	$("#gray").click(function() 	{play("gray")})
+
+	$("#turn").click(function(){turn()})
+}
+function turn()
+{
+	$("#green").click()
+	$("#red").click()
+	$("#yellow").click()
+	$("#blue").click()
+	$("#gray").click()
+}
+function get(i) {return $("#"+i)}
+function play(color)
+{
+	var moves = []
+	$("[color='"+color+"']").each(function()
+	{
+		var i = $(this).attr("id").trim()
+		var neigh = getNeighbors(i)
+		for(n in neigh) {moves.push([i, neigh[n]])}
+	})
+	for(m in moves)
+	{
+		if ($("#"+moves[m][0]).attr("number") <= $("#"+moves[m][1]).attr("number") || $("#"+moves[m][0]).css("background-color") == $("#"+moves[m][1]).css("background-color"))
+		{
+			moves.splice(m, 1)
+		}
+	}
+	for(m in moves)
+	{
+		battle($("#"+moves[m][0]), $("#"+moves[m][1]))
+	}
+
+
+	var points = $("[color='"+color+"']").length/2
+	for(var p = points; p > 0; p--)
+	{
+		var s = $("[color='"+color+"']").eq(randomnumber(0, $("[color='"+color+"']").length-1))
+		if (s.attr("number") == 8)
+		{
+			p++
+			continue
+		}
+		point(s, parseInt(s.attr("number"))+1)
+	}
+
+
+}
+
+function battle(s1, s2)
+{
+	var m1 = parseInt(s1.attr("id"))
+	var k1 = getNeighbors(m1)
+	var m2 = parseInt(s2.attr("id"))
+	var k2 = getNeighbors(m2)
+
+	if (k1.indexOf(m2) == -1) 					{return}
+	if (s1.attr("color") == s2.attr("color")) 	{return}
+	if (s1.attr("number") == 1) 				{return}
+
+	var d1 = rolldice(s1.attr("number"))
+	var d2 = rolldice(s2.attr("number"))
+
+
+	$("#caption").html("<span style='color: "+s1.attr("color")+"'>"+d1+"</span> vs. <span style='color: "+s2.attr("color")+"'>"+d2+"</span>")
+
+
+	if (d1 > d2)
+	{
+		s2.attr("color", s1.attr("color"))
+		point(s2, s1.attr("number")-1)
+	}
+	point(s1, 1)
+
+	info()
+}
+function turn()
+{
+	for(c in colors)
+	{
+		play(colors[c])
+	}
+	// if (check() == true)
+	// {
+	// 	clearInterval(interval)
+	// 	going = false
+	// }
+	// var x = 0
+	// play(colors[x])
+	// x++
+	// if (x == 5) {x = 0}
+}
+function point(s, n)
+{
+	if (n > 8) {return}
+	s.attr("number", n)
+	s.html(s.attr("number"))
+}
+function check()
+{
+	$(".k").each(function()
+	{
+		var i = colors.indexOf($(this).attr("color"))
+		scores[i]++
+	})
+	for(s in scores) {if (scores[s] == 100) {return true}}
+	return false
+}
+function getNeighbors(k)
+{
+	k = parseInt(k)
+	var r = []
+	if 		(k % 10 != 1)
+	{
+		if 	(k - 11 > 0) 	{r.push(parseInt(k)-11)}
+		if 	(k - 1  > 0) 	{r.push(parseInt(k)-1)}
+		if 	(k + 9  < 101) 	{r.push(parseInt(k)+9)}
+	}
+	if 		(k % 10 != 0)
+	{
+		if 	(k - 9  > 0) 	{r.push(parseInt(k)-9)}
+		if 	(k + 1  < 101) 	{r.push(parseInt(k)+1)}
+		if 	(k + 11 < 101) 	{r.push(parseInt(k)+11)}
+	}
+	if 		(k - 10 > 0) 	{r.push(parseInt(k)-10)}
+	if 		(k + 10 < 101) 	{r.push(parseInt(k)+10)}
+	// return 	r.sort(function(a,b){return a-b})
+	return r
+}
+function rolldice(n)
+{
+	var r = 0
+	for (var i = 0; i < n; i++) {r += randomnumber(1, 6)}
+	return r
+}
+function randomnumber(min, max, round)
+{
+	if (round = "") {round = 1}
+	result = (Math.random()*(max-min))+min
+	result *= Math.pow(10, round)
+	result = Math.round(result)
+	result /= Math.pow(10, round)
+	return result
+}
+function grid(h, w)
+{
+	$("#board").html("")
+	$("#board").css({"left":(($(window).width()-500)/2), "top":(($(window).height()-500)/2)})
+	$("#caption").css({"left":(($(window).width()-500)/2)})
+	$("#counts").css({"right":(($(window).width()-500)/2)})
+
+	var k = 1
+	for (var i = 1; i <= 500; i+=50)
+	{
+		for(var j = 1; j <= 500; j+=50)
+		{
+			var a = randomnumber(1, 5)
+			var clr = colors[randomnumber(0, 4)]
+
+			$("#board").append("<div class='k' x='"+i+"' y='"+j+"' id='"+k+"' color='"+clr+"' number='"+a+"'></div>")
+			$("#"+k).css({"left":i, "top":j}).html(a)
+			k++
+		}
+	}
+}
+</script>
+</head>
+<body>
+<div id='caption'></div>
+<div id='counts'></div>
+<div id="board"></div>
+<!-- <h3>Dicewars</h3> -->
+<p>This is a simulation written in jQuery of the popular flash game <a href='http://www.gamedesign.jp/flash/dice/dice.html'>DiceWars</a>. Future plans include adding the ability to play, customization of the board, enhancing and varying AI's abilities, enhancing the graphics, and allowing remote multiplayer.</p>
+
+</body>
+</html>
+
+
+<script>
+// $("body").click(function()
+// {
+// 	if (check() == true)
+// 	{
+// 		window.location.reload()
+// 	}
+// 	if (going == false)
+// 	{
+// 		interval = setInterval(function() {turn()}, 1000)
+// 		going = true
+// 	}
+// 	else if (going == true)
+// 	{
+// 		clearInterval(interval)
+// 		going = false
+// 	}
+
+// })
+
+
+
+
+</script>
