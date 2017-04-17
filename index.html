@@ -1,68 +1,80 @@
-<!doctype html>
-<html lang="en">
+<html>
 <head>
+<title>Matthew Morrone</title>
+<link rel="import" href="load.html" onload="" onerror="">
+<script>
+var log = console.log.bind(console)
+function loadpage(url) {
+	$.post(url, function(data) {
+		$("#content").fadeOut(150, function() {
+			$("#content").html(data)
+		})
+		$("#content").css({
+			width: $("#wrapper").outerWidth() - ($("nav").outerWidth() + $("aside").outerWidth())
+		}).fadeIn(300)
+	})
+}
+$(function() {
+	$("#year").text(new Date().getFullYear())
+	$(window).resize(function() {
+		$("nav, aside").height(Math.max($("nav").height(), $("aside").height()));
+		$("nav, aside").outerWidth($("#wrapper").outerWidth()/10);
+	}).resize()
+	if (window.location.pathname.substring(1) == "") {
+		loadpage("/pages/contact.html")
+	}
+	else {
+		loadpage("/pages/"+window.location.pathname.substring(1)+".html")
+	}
 
-	<meta charset="UTF-8">
-	<title>Matthew Morrone</title>
+})
 
-	<link href="images/psi.ico" 		rel="shortcut icon" type="image/x-icon" />
-	<link href="css/reset.css" 			rel="stylesheet" 	type="text/css" />
-	<link href="css/style.css" 			rel="stylesheet" 	type="text/css" />
-	<link href="css/jquery.ui.css" 		rel="stylesheet" 	type="text/css" />
-	<!-- <link href="fonts/font-awesome/css/font-awesome.min.css" 	rel="stylesheet" 	type="text/css" /> -->
-	<link href="fonts/fonts.css" 		rel="stylesheet" 	type="text/css" />
-	<link href="css/animations.css" 	rel="stylesheet" 	type="text/css" />
-
-
+</script>
 </head>
-<body ng-app="ngAnimate">
-	<header>
-		<h1><a href="/">Matthew Morrone</a></h1>
-	</header>
-	<nav>
-		<h1>Projects</h1>
-		<ul>
-			<li><a class="project" href="/portfolio/colorpicker.html">Color</a></li>
-			<li><a class="project" href="/portfolio/counter.html">Counter</a></li>
-			<!-- <li><a class="project" href="/portfolio/dicewars.html">Dicewars</a></li> -->
-			<li><a class="project" href="/portfolio/graph.html">Graph</a></li>
-			<li><a class="project" href="/ipa-chart">IPA</a></li>
-			<!-- <li><a class="project" href="/portfolio/browser/lingo">Lingo</a></li> -->
-			<li><a class="project" href="/morse-code">Morse</a></li>
-			<li><a class="project" href="/spreadsheet">Sheet</a></li>
-			<li><a class="project" href="/portfolio/triangle.html">Triangle</a></li>
-		</ul>
-	</nav>
-	<div ng-controller="Ctrl">
-		<div id="content" class="slide-animate-container">
-			<div class="slide-animate" ng-include="template.url"></div>
-		</div>
-		<aside>
-
-			<select ng-model="template" ng-options="t.name for t in templates">
-				<option value="">(blank)</option>
-			</select>
-
-			<ul ng-model="template">
-				<li ng-repeat="t in templates"><a href='{{t.url}}'>{{t.name}}</a></li>
+<body>
+	<div id="wrapper">
+		<header>
+			<h1><a href="/">Matthew Morrone</a></h1>
+		</header>
+		<nav>
+			<h1>Projects</h1>
+			<ul>
+				<li><a class="project" href="/sweet">Editor</a></li>
+				<li><a class="project" href="/ipa">IPA</a></li>
+				<li><a class="project" href="/morse">Morse</a></li>
+				<li><a class="project" href="/flash">Nato</a></li>
+				<li><a class="project" href="/glyph">Icons</a></li>
+				<li><a class="project" href="/widgets">Widgets</a></li>
+				<li><a class="project" href="/sheet">Sheet</a></li>
+				<li><a class="project" href="/chess">Chess</a></li>
+				<!-- <a href='404'>404</a> -->
+				<!-- <a href='admin'>admin</a> -->
+				<!-- <a href='api'>api</a> -->
+				<!-- <a href='fonts'>fonts</a> -->
+				<!-- <a href='img'>img</a> -->
+				<!-- <a href='neat'>neat</a> -->
+				<!-- <a href='pages'>pages</a> -->
+				<!-- <a href='resume'>resume</a> -->
+				<!-- <a href='starch'>starch</a> -->
 			</ul>
-		</aside>
-	</div>
-	<footer>
-		<span><a href="/"><img id="icon" src="images/psi.ico" height="25" width="25"></a></span>
-		<span><a class="email" 									title="copyright"	target="_blank">&copy;2014 Matthew Morrone</a></span>
-		<span>&nbsp;|&nbsp;</span>
-		<span><a href="http://lnkd.in/C7Unz6" 					title="LinkedIn" 	target="_blank"><i class="icon-linkedin icon-large" id="li"></i></a></span>
-		<span>&nbsp;|&nbsp;</span>
-		<span><a href="https://github.com/matthewmorrone1" 		title="GitHub" 		target="_blank"><i class="icon-github 	icon-large" id="gh"></i></a></span>
-		<span>&nbsp;|&nbsp;</span>
-		<span><a href="https://facebook.com/matthewmorrone" 	title="Facebook" 	target="_blank"><i class="icon-facebook icon-large" id="fb"></i></a></span>
-	</footer>
-		<script src="js/jquery.js"></script>
-	<script src="js/jquery.ui.js"></script>
-	<script src="js/angular.js"></script>
-	<!--<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.13/angular-animate.js"></script>-->
-	<script src="js/script.js"></script>
+		</nav>
+		<div id="content">
 
+		</div>
+		<footer>
+			<span><a href="/"><img id="icon" src="psi.ico" height="18" width="18"></a></span>
+			<span><a class="email" title="copyright" target="_blank">&copy;<span id='year'></span> Matthew Morrone</a></span>
+			<span>&nbsp;|&nbsp;</span>
+			<span><a href="http://lnkd.in/C7Unz6" title="LinkedIn" target="_blank"><i class="fa fa-linkedin" id="li"></i></a></span>
+			<span>&nbsp;|&nbsp;</span>
+			<span><a href="https://github.com/matthewmorrone1" title="GitHub" target="_blank"><i class="fa fa-github" id="gh"></i></a></span>
+			<span>&nbsp;|&nbsp;</span>
+			<span><a href="https://facebook.com/matthewmorrone" title="Facebook" target="_blank"><i class="fa fa-facebook" id="fb"></i></a></span>
+		</footer>
+	</div>
 </body>
 </html>
+
+
+
+
