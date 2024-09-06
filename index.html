@@ -1,83 +1,30 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<title>Matthew Morrone</title>
-<link rel="import" href="load.html" onload="" onerror="">
-<script>
-var log = console.log.bind(console)
-function loadpage(url) {
-	$.post(url, function(data) {
-		$("#content").fadeOut(150, function() {
-			$("#content").html(data)
-		})
-		$("#content").css({
-			width: $("#wrapper").outerWidth() - ($("nav").outerWidth() + $("aside").outerWidth())
-		}).fadeIn(300)
-	})
-}
-$(function() {
-	$("#year").text(new Date().getFullYear())
-	$(window).resize(function() {
-		$("nav, aside").height(Math.max($("nav").height(), $("aside").height()));
-		$("nav, aside").outerWidth($("#wrapper").outerWidth()/10);
-	}).resize()
-	if (window.location.pathname.substring(1) == "") {
-		loadpage("/pages/contact.html")
-	}
-	else {
-		loadpage("/pages/"+window.location.pathname.substring(1)+".html")
-	}
-
-})
-
-</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="img/psi-black.png" rel="shortcut icon" id="psi-black" type="image/x-icon" />
+    <link href="img/psi-white.png" rel="shortcut icon" id="psi-white" type="image/x-icon" />
+    <meta property="og:title" content="Matthew Morrone" />
+    <meta property="og:url" content="https://www.matthewmorrone.com/" />
+    <meta property="og:image" content="https://www.matthewmorrone.com/img/me.jpg" />
+    <meta property="og:type" content="website" />
+    <meta property="og:description" content="Professional webpage for Matthew Morrone" />
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="index.css">
+    <link rel="import" href="fonts.html" />
+    <title>Matthew Morrone</title>
 </head>
 <body>
-	<div id="wrapper">
-		<header>
-			<h1><a href="/">Matthew Morrone</a></h1>
-		</header>
-		<nav>
-			<h1>Projects</h1>
-			<ul>
-				<li><a class="project" href="/editor">Editor</a></li>
-				<li><a class="project" href="/sheet">Sheet</a></li>
-				<li><a class="project" href="/ipa">IPA</a></li>
-				<li><a class="project" href="/morse">Morse</a></li>
-				<li><a class="project" href="/flash">Flash</a></li>
-				<li><a class="project" href="/glyph">Glyph</a></li>
-				<li><a class="project" href="/widgets">Widgets</a></li>
-				<li><a class="project" href="/chess">Chess</a></li>
-				<!-- <a href='404'>404</a> -->
-				<!-- <a href='admin'>admin</a> -->
-				<!-- <a href='api'>api</a> -->
-				<!-- <a href='fonts'>fonts</a> -->
-				<!-- <a href='img'>img</a> -->
-				<!-- <a href='neat'>neat</a> -->
-				<!-- <a href='pages'>pages</a> -->
-				<!-- <a href='resume'>resume</a> -->
-				<!-- <a href='starch'>starch</a> -->
-			</ul>
-		</nav>
-		<div id="content">
-
-		</div>
-		<footer>
-			<span><a href="/"><img id="icon" src="psi.ico" height="18" width="18"></a></span>
-			<span><a class="email" title="copyright" target="_blank">&copy;<span id='year'></span> Matthew Morrone</a></span>
-			<span>&nbsp;|&nbsp;</span>
-			<span><a href="http://lnkd.in/C7Unz6" title="LinkedIn" target="_blank"><i class="fa fa-linkedin" id="li"></i></a></span>
-			<span>&nbsp;|&nbsp;</span>
-			<span><a href="https://github.com/matthewmorrone" title="GitHub" target="_blank"><i class="fa fa-github" id="gh"></i></a></span>
-			<span>&nbsp;|&nbsp;</span>
-			<span><a href="https://facebook.com/matthewmorrone" title="Facebook" target="_blank"><i class="fa fa-facebook" id="fb"></i></a></span>
-		</footer>
-		<script>
-		console.log(window.location)
-		</script>
-	</div>
+    <link rel="import" href="header.html" />
+    <div class="content">
+        <link rel="import" href="left.html" />
+        <link rel="import" href="main.html" />
+        <link rel="import" href="right.html" />
+    </div>
+    <link rel="import" href="footer.html" />
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="icon.js" defer></script>
+    <script src="index.js" defer></script>
 </body>
 </html>
-
-
-
-
