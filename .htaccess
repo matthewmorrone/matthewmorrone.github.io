@@ -40,12 +40,6 @@ IndexOptions IgnoreCase FoldersFirst FancyIndexing NameWidth=* DescriptionWidth=
 # SET DISPLAY ORDER
 IndexOrderDefault Ascending Name
 
-# SPECIFY HEADER FILE
-HeaderName /header.html
-
-# SPECIFY FOOTER FILE
-ReadmeName /footer.html
-
 # IGNORE THESE FILES
 IndexIgnore header.html footer.html .htaccess .ftpquota .DS_Store *.log *,v *,t .??* *~ *#
 
