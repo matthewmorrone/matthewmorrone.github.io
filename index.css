@@ -2,8 +2,14 @@
     margin: 0px;
     padding: 0px;
 }
+body {
+    height: 100vh;
+    display: flex;
+    flex-flow: column nowrap;
+}
 header, footer {
     padding: 1rem;
+    white-space: nowrap;
 }
 header h1 {
     text-align: center;
@@ -16,26 +22,28 @@ header {
 }
 .content {
     display: flex;
+    flex-grow: 2;
     justify-content: center;
-    min-height: 80vh;
     line-height: 1.9;
     font-family: "Open Sans", sans-serif;
 }
 main {
-    flex-grow: 0;
     padding: 1rem;
-    width: 25%;
+    display: flex;
+}
+main .contact {
+    width: fit-content;
+    padding: .5rem;
+    white-space: nowrap;
 }
 main img {
-    float: right;
-    width: 120px;
-    margin: 2px;
+    width: 123px;
+    padding: .5rem;
+    object-fit: contain;
+    object-position: top;
 }
-.left {
-    width: 200px;
-    padding: 1rem;
-}
-.right {
+
+.left, .right {
     width: 200px;
     padding: 1rem;
 }
@@ -59,18 +67,12 @@ footer ul li:not(:last-child)::after {
 
 @media (max-width: 768px) {
     .left, .right {
-        width: 100%;
-        padding: 0.5rem;
+        display: none;
     }
-    .container {
-        flex-direction: column;
+    .content {
+        flex-grow: .5;
     }
 }
 @media (max-width: 480px) {
-    header, footer {
-        text-align: center;
-    }
-    main {
-        padding: 0.5rem;
-    }
+
 }

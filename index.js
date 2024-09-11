@@ -3,15 +3,14 @@ document.addEventListener("DOMContentLoaded", () => {
         .forEach(link => fetch(link.href)
         .then(res => res.text())
         .then(html => link.outerHTML = html));
-});
 
-$(() => {
-    $(document).on("click", "a", function(e) {
-        if ($(this).hasClass("email")) {
+    document.addEventListener("click", function(e) {
+        if (e.target && e.target.matches("a.email")) {
+            e.preventDefault();
             window.open("znvygb:znggurjzbeebar1@tznvy.pbz".replace(/[A-Z]/gi, c =>
                 "NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm"[
-                "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".indexOf(c)]))
+                "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".indexOf(c)]));
         }
     });
-    $("#year").text(new Date().getFullYear()-2);
 });
+
