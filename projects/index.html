@@ -1,0 +1,145 @@
+<html>
+<head>
+<title>Autocorrect</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!-- <link rel="shortcut icon" type="image/x-icon" href="http://www.matthewmorrone.com/www/psi.ico" /> -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css"></link>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/css/bootstrap.min.css"></link>
+<style>
+* {
+	margin: 0px;
+	padding: 0px;
+	font-family: monospace;
+}
+body {
+	width: 100%;
+	height: 100%;
+/*	display: flex;
+	align-items: center;
+	justify-content: center;*/
+}
+/*header {
+	align-self: flex-start;
+}
+footer {
+	align-self: flex-end;
+}
+content {
+	margin: auto;
+}
+table, th, td {
+	border: 1px solid black;
+	border-collapse: collapse;
+}*/
+div {
+	word-wrap: break-word; /* Internet Explorer 5.5+ */
+	white-space: pre-wrap; /* css-3 */
+}
+</style>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-color/2.1.2/jquery.color.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/synaptic/1.1.4/synaptic.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.13.0"> </script>
+<!-- <script src="trie.js"></script> -->
+<script src="trieing.js"></script>
+<!-- <script src="google-10000-english.js"></script> -->
+<script src="words.js"></script>
+<script src="pluralize.js"></script>
+<script src="past-tense.js"></script>
+<script src="https://unpkg.com/compromise@latest/builds/compromise.min.js"></script>
+<script src="nlp.js"></script>
+
+</head>
+<body>
+<header></header>
+<content>
+<label><input type='text' value='unz' /> Input</label>
+<div></div>
+</content>
+<footer></footer>
+<script>
+function levenshtein(s, t) {
+    if (!s.length) return t.length;
+    if (!t.length) return s.length;
+
+    return Math.min(
+        levenshtein(s.substr(1), t) + 1,
+        levenshtein(t.substr(1), s) + 1,
+        levenshtein(s.substr(1), t.substr(1)) + (s[0] !== t[0] ? 1 : 0)
+    ) + 1;
+}
+String.prototype.levenstein = function(string) {
+    var a = this, b = string + "", m = [], i, j, min = Math.min;
+
+    if (!(a && b)) return (b || a).length;
+
+    for (i = 0; i <= b.length; m[i] = [i++]);
+    for (j = 0; j <= a.length; m[0][j] = j++);
+
+    for (i = 1; i <= b.length; i++) {
+        for (j = 1; j <= a.length; j++) {
+            m[i][j] = b.charAt(i - 1) == a.charAt(j - 1)
+                ? m[i - 1][j - 1]
+                : m[i][j] = min(
+                    m[i - 1][j - 1] + 1,
+                    min(m[i][j - 1] + 1, m[i - 1][j] + 1))
+        }
+    }
+    return m[b.length][a.length];
+}
+function longest(arr) {
+	return arr.reduce(function(a, b) {
+		return a.length > b.length ? a : b;
+	}).length
+}
+
+var trie = new Trie(), i;
+for(i = 0; i < words.length; i++) {
+	trie.add({
+	    key: words[i],
+	    value: {name: words[i]},
+	    score: i//words.length - i
+	});
+}
+
+function getPrefixes(input) {
+	let result = []
+	for(let j = 1; j < input.length-1; j++) {
+		result.push([input.slice(0, j+1), trie.prefixSearch(input.slice(0, j+1), {unique: true}).length])
+	}
+	result = result.filter(x => x[1] === 1)
+	return result/*.reverse()*/.map(x => x.join(":")).join(",")
+}
+
+
+
+
+
+
+
+
+input = "", results = [], pad = 0
+$("input").keyup(function() {
+	input = $(this).val()
+	if (input.length < 2) {
+		$("div").html("")
+		return
+	}
+	results = trie.prefixSearch(input, {unique: true/*, limit: 1*/})
+	if (results.length === 0) {
+		$("div").html("")
+		return
+	}
+	let info = '', nouns, verbs
+	pad = longest(results.map(x => x.name))+1
+	results = results.map(x => [x.name.padEnd(pad), x.score, getPrefixes(x.name)])//.filter(x => x[2].length)
+	$("div").html(results.map(x => x.join("\t")).join("\n"))
+}).keyup()
+
+</script>
+</body>
+</html>
