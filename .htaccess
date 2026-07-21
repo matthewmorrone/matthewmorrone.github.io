@@ -25,6 +25,15 @@ RewriteRule ^spreadsheet/(.*)$ sheet/$1 [QSA]
 RewriteRule ^ipa-chart/(.*)$ ipa/$1 [QSA]
 RewriteRule ^morse-code/(.*)$ morse/$1 [QSA]
 RewriteRule ^icons/(.*)$ glyph/$1 [QSA]
+
+# Pre-2024-redesign bookmarks pointed at these project names directly
+# off the site root; projects now live under /projects/.
+RewriteRule ^ipa/?(.*)$ /projects/ipa/$1 [R=301,L]
+RewriteRule ^diachron-db/?(.*)$ /projects/diachron-db/$1 [R=301,L]
+RewriteRule ^flash/?(.*)$ /projects/flash/$1 [R=301,L]
+RewriteRule ^morse/?(.*)$ /projects/morse/$1 [R=301,L]
+RewriteRule ^chess/?(.*)$ /projects/chess/$1 [R=301,L]
+RewriteRule ^space/?(.*)$ /projects/space/$1 [R=301,L]
 </IfModule>
 
 
