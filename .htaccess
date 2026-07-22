@@ -19,6 +19,14 @@ order allow,deny
 deny from all
 </Files>
 
+# Block access to .git directories - this repo and every project repo
+# under /projects/ are git clones, and their .git/ was reachable over
+# HTTP (full history/internals downloadable) until this rule was added.
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule (^|/)\.git/ - [F,L]
+</IfModule>
+
 <IfModule mod_rewrite.c>
 RewriteEngine On
 RewriteRule ^spreadsheet/(.*)$ sheet/$1 [QSA]
