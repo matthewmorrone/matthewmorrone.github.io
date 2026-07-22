@@ -45,7 +45,12 @@ RewriteRule ^chess(/.*)?$ projects/chess$1 [L]
 RewriteRule ^space(/.*)?$ projects/space$1 [L]
 
 # Redirect the /projects/-prefixed URLs to the clean ones above, so
-# the URL bar is consistent regardless of how someone arrives.
+# the URL bar is consistent regardless of how someone arrives. Must
+# check THE_REQUEST (the client's actual request line) rather than
+# the rewritten path, since the internal rewrite above produces
+# /projects/... internally and would otherwise match this rule too,
+# looping the two rules against each other forever.
+RewriteCond %{THE_REQUEST} \s/projects/(ipa|diachron-db|flash|morse|chess|space)(/\S*)?\s
 RewriteRule ^projects/(ipa|diachron-db|flash|morse|chess|space)(/.*)?$ /$1$2 [R=301,L]
 </IfModule>
 
